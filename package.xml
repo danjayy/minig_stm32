@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>stm32</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+
+  <maintainer email="ros1@todo.todo">ros1</maintainer>
+  <license>TODO: License declaration</license>
+
+  <!-- Buildtool -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Build dependencies -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>cola2_msgs</build_depend>
+  <build_depend>cola2_lib_ros</build_depend>
+
+  <!-- Run dependencies -->
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>cola2_msgs</exec_depend>
+  <exec_depend>cola2_lib_ros</exec_depend>
+
+  <!-- System dependency (COLA2_LIB) -->
+  <build_depend>COLA2_LIB</build_depend>
+  <exec_depend>COLA2_LIB</exec_depend>
+
+  <!-- No need for test_depend or rosidl stuff in ROS 1 -->
+
+  <export>
+    <!-- nothing needed for now -->
+  </export>
+</package>

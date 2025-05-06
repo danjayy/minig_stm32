@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="stm32" type="stm32_node" name="stm32" output="screen" />
+</launch>
