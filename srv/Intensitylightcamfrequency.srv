@@ -1,0 +1,4 @@
+float64 intensity
+int32 camfrec
+---
+bool success
