@@ -34,7 +34,7 @@ namespace cola2
     struct SPConfig;
   }
 }
-using namespace std;
+// using namespace std;
 
 class STM32node
 {
@@ -84,7 +84,7 @@ STM32node::STM32node()
 
 void STM32node::init()
 {
-  cout << "Started node.init() initialisation" << endl;
+  std::cout << "Started node.init() initialisation" << std::endl;
   getConfig();
 
   ros::NodeHandle nh;
@@ -196,17 +196,19 @@ std::string STM32node::intToString(int value)
 bool STM32node::handle_cam_trigger(stm32::Intensitylightcamfrequency::Request &request,
                                    stm32::Intensitylightcamfrequency::Response &response)
 {
-  if (request.intensity < 0 || request.intensity > 1)
+  if (request.intensity < 0 || request.intensity > 1) // checking that the intensity request for the lights is within bounds
   {
     response.success = false;
     return true;
   }
   else
   {
-    std::string checksum = fillWithZeros((request.camfrec + normalizeTo255ForMotors(request.intensity)), 3);
+    std::cout << "Sending the camera and light values..." << std::endl;
+    std::string checksum = fillWithZeros((request.camfrec + normalizeTo255(request.intensity)), 3);
     std::string msg = "cc:" + intToString(request.camfrec) + ":";
     msg = msg + fillWithZeros(normalizeTo255(request.intensity), 3) + ":" + checksum + ":ee";
-    // stm32_->write(msg);
+    stm32_->write(msg);
+    std::cout << msg << std::endl;
     ROS_INFO("%s", msg.c_str());
     response.success = true;
     return true;
@@ -223,10 +225,10 @@ void STM32node::setpoints_callback(const cola2_msgs::Setpoints &msg)
   {
     if (setpoint >= -1.0 && setpoint <= 1.0)
     {
-      std::cout << "Sending Thruster setpoints" << std::endl;
       int normalized_setpoint = normalizeTo255ForMotors(setpoint);
       checksum += normalized_setpoint;
       string_to_send = string_to_send + fillWithZeros(normalized_setpoint, 3) + ":";
+      std::cout << "Sending Thruster setpoints: "<< normalized_setpoint << std::endl;
     }
     else
     {
@@ -256,7 +258,7 @@ void STM32node::getConfig()
   nh.param<std::string>("serial_port/flow_control", config_.sp_config.sp_flow_control, "NONE");
   nh.param<int>("serial_port/timeout", config_.sp_config.sp_timeout, 10000);
   nh.param<std::string>("frame_id", config_.frame_id, "STM32");
-
+  std::cout<<"Heyyyy!!!"<<std::endl;
   // Append robot name to frame id to meet the TF tree
   std::string ns = ros::this_node::getNamespace();
   if (ns.length() > 1 && ns[0] == '/')
@@ -266,7 +268,7 @@ void STM32node::getConfig()
 
 int main(int argc, char **argv)
 {
-  cout << "NODE HAS BEEN STARTED!!!!" << endl;
+  std::cout << "NODE HAS BEEN STARTED!!!!" << std::endl;
   ros::init(argc, argv, "stm32_node");
   STM32node node;
   node.init();
@@ -276,6 +278,7 @@ int main(int argc, char **argv)
   {
     if (node.isDeviceConnected())
     {
+      std::cout<<"Device connected!!!"<<std::endl;
       ros::spinOnce();
     }
     else
