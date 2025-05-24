@@ -285,7 +285,6 @@ int main(int argc, char **argv)
     {
       ROS_ERROR("STM32 desconectado. Intentando reconectar...");
       node.reconnect();
-      ros::Duration(0.1).sleep();
     }
     rate.sleep();
   }
