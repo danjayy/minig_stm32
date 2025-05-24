@@ -272,7 +272,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "stm32_node");
   STM32node node;
   node.init();
-  ros::Rate rate(1);
+  ros::Rate rate(20);
 
   while (ros::ok())
   {
