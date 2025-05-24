@@ -90,7 +90,7 @@ void STM32node::init()
   ros::NodeHandle nh;
 
   // Define publishers
-  sub_setpoints_ = nh.subscribe("/stm32/Setpoints", 10, &STM32node::setpoints_callback, this);
+  sub_setpoints_ = nh.subscribe("/minigirona/controller/thruster_setpoints", 10, &STM32node::setpoints_callback, this);
 
   service_camTrigger_ = nh.advertiseService("cam_trigger_service", &STM32node::handle_cam_trigger, this);
 
@@ -220,8 +220,18 @@ void STM32node::setpoints_callback(const cola2_msgs::Setpoints &msg)
   std::string string_to_send = "aa:";
   int checksum = 0;
 
+  // Reordering the values to the correct physical representation
+  const std::vector<double>& setpoints = msg.setpoints;
+  std::array<double, 6> fixed_setpoints;
+  std::copy_n(setpoints.begin(), 6, fixed_setpoints.begin());
+  constexpr std::array<int, 6> reorder_map = {2, 1, 4, 5, 3, 0}; // reorder map depending on how the motors are connrected to the stm in the cylinder
+  std::array<double, 6> reordered;
+  for (size_t i = 0; i < 6; ++i)
+  {
+      reordered[i] = fixed_setpoints[reorder_map[i]];
+  }
   // Process the setpoints array
-  for (const auto &setpoint : msg.setpoints)
+  for (const auto &setpoint : reordered)
   {
     if (setpoint >= -1.0 && setpoint <= 1.0)
     {
