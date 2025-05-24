@@ -258,7 +258,7 @@ void STM32node::getConfig()
   nh.param<std::string>("serial_port/flow_control", config_.sp_config.sp_flow_control, "NONE");
   nh.param<int>("serial_port/timeout", config_.sp_config.sp_timeout, 10000);
   nh.param<std::string>("frame_id", config_.frame_id, "STM32");
-  std::cout<<"Heyyyy!!!"<<std::endl;
+  std::cout << "Heyyyy!!!" << std::endl;
   // Append robot name to frame id to meet the TF tree
   std::string ns = ros::this_node::getNamespace();
   if (ns.length() > 1 && ns[0] == '/')
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
   {
     if (node.isDeviceConnected())
     {
-      std::cout<<"Device connected!!!"<<std::endl;
+      std::cout << "Device connected!!!" << std::endl;
       ros::spinOnce();
     }
     else
