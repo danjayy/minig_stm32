@@ -1,3 +1,7 @@
 <launch>
-  <node pkg="stm32" type="stm32_node" name="stm32" output="screen" />
+  <node pkg="stm32" type="stm32_node" name="stm32" output="screen">
+    <remap from="/stm32/Setpoints" to="girona1000/controller/thruster_setpoints"/>
+    <param name="serial_port/path" value="/dev/ttyACM0"/>
+    <param name="serial_port/baud_rate" value="9600"/>
+  </node>
 </launch>
