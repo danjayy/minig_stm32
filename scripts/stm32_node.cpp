@@ -121,11 +121,11 @@ void STM32node::init()
 
 bool STM32node::isDeviceConnected()
 {
-  int fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NONBLOCK);
+  int fd = open(config_.sp_config.sp_path.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
 
   if (fd == -1)
   {
-    ROS_ERROR("El dispositivo STM32 no está disponible (no se puede abrir /dev/ttyACM0).");
+    ROS_ERROR("El dispositivo STM32 no está disponible (no se puede abrir %s).", config_.sp_config.sp_path.c_str());
     return false;
   }
 
